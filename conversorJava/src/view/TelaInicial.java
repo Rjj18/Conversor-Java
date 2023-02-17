@@ -15,6 +15,11 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.Window.Type;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JMenuBar;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.PopupMenuEvent;
 
 public class TelaInicial {
 
@@ -54,8 +59,25 @@ public class TelaInicial {
 		frmMenu.setBounds(100, 100, 486, 359);
 		frmMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMenu.getContentPane().setLayout(null);
+		comboBox.addPopupMenuListener(new PopupMenuListener() {
+			public void popupMenuCanceled(PopupMenuEvent e) {
+			}
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				
+				String a = comboBox.getSelectedItem().toString();
+				
+				if (a == "Conversor de Moedas") {
+					MenuConversorMoeda menu = new MenuConversorMoeda();
+					menu.ConversorMoedas.setVisible(true);
+					frmMenu.dispose();
+				}
+				
+			}
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+			}
+		});
 		
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Conversor de Moedas", "Conversor de Distância"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Selecione...", "Conversor de Moedas", "Conversor de Distância"}));
 		comboBox.setToolTipText("");
 		comboBox.setBounds(57, 106, 347, 32);
 		
