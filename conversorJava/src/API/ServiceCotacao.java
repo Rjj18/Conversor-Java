@@ -17,37 +17,39 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
-public class CotacoesGson {
+public class ServiceCotacao {
 	
-	public static void main(String[] args) throws Exception {
+	static String servicoWeb = "https://economia.awesomeapi.com.br/json/";
+	static int statusConexao = 200;
+	private static Moeda newMoeda;
+	
+	public static Moeda CotacaoMoeda (String moeda) throws Exception {
 		
-		URL cotacao = new URL("https://economia.awesomeapi.com.br/json/USD-BRL");	
-		HttpsURLConnection conexao = (HttpsURLConnection) cotacao.openConnection();
+		String urlCotacao = servicoWeb + moeda;
+		
+		URL url = new URL(urlCotacao);	
+		HttpsURLConnection conexao = (HttpsURLConnection) url.openConnection();
 		conexao.setRequestMethod("GET");
-	
 
         try {
-
             InputStream is = conexao.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             String co = "";
-            List<String> jsonCoin = new ArrayList<String>();
-            
+            List<String> jsonCoin = new ArrayList<String>();            
             while((co = br.readLine()) != null){
                 jsonCoin.add(co);
             }
-
-            String singleString = jsonCoin.toString().replaceAll("[\\[\\]]","");
-
-            USDBRL coinJson = new Gson().fromJson(singleString, USDBRL.class);
             
-            System.out.println(coinJson.getName());
-
- 
+            String singleString = jsonCoin.toString().replaceAll("[\\[\\]]","");
+            Moeda coinJson = new Gson().fromJson(singleString, Moeda.class);
+            newMoeda = new Moeda(coinJson.getCodein(),coinJson.getBid(),coinJson.getCode());
+            return newMoeda;
+            
         } catch (Exception e) {
             throw new Exception("ERRO: " + e.getMessage());
         }
 	
 		
 	}
+	
 }
