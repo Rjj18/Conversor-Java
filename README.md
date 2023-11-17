@@ -36,7 +36,9 @@ java -cp bin Main
 ~~~
 
 ## Estrutura do Projeto
+
 src/: Contém os arquivos-fonte Java.
+
 bin/: Diretório de saída para os arquivos compilados.
 [Incluir outras informações sobre a estrutura do projeto]
 
